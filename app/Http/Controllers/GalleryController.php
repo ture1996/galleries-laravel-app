@@ -10,25 +10,33 @@ use Illuminate\Support\Facades\Auth;
 class GalleryController extends Controller
 {
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth', ['except' => 'index']);
     }
 
     public function index()
     {
-        return Gallery::all();
+        $galleries =  Gallery::with('user')->orderBy('id', 'desc')->paginate(10);
+        if ($galleries->isEmpty()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'There are no galleries created',
+            ], 404);
+        };
+        return $galleries;
     }
 
     public function show($id)
     {
-        return Gallery::findOrFail($id);
+        return Gallery::with('user')->with('comments')->findOrFail($id);
     }
 
     public function store(GalleryRequest $request)
     {
-        $user = $request->all();
-        $user['user_id'] = Auth::user()->id;
-        return Gallery::create($user);
+        $gallery = $request->all();
+        $gallery['user_id'] = Auth::user()->id;
+        return Gallery::create($gallery);
     }
 
     public function update($id, GalleryRequest $request)

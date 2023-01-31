@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Gallery extends Model
+class Comment extends Model
 {
     use HasFactory;
 
-    protected $casts = ['url' => 'array'];
     protected $guarded = ['id'];
 
     public function user()
@@ -17,8 +17,8 @@ class Gallery extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function comments()
+    public function gallery()
     {
-        return $this->hasMany(Comment::class)->orderBy('id', 'desc')->with('user');
+        return $this->belongsTo(Gallery::class);
     }
 }
