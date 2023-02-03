@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -41,6 +42,8 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'created_at' => "date:d.m.Y H:i:s",
+        'updated_at' => "date:d.m.Y H:i:s"
     ];
 
     /**
@@ -51,6 +54,11 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTIdentifier()
     {
         return $this->getKey();
+    }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->timezone('Europe/Belgrade');
     }
 
     /**

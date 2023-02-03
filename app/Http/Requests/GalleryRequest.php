@@ -26,7 +26,7 @@ class GalleryRequest extends FormRequest
     {
         return [
             'name' => 'required|min:2|max:255',
-            'description' => 'required|max:1000',
+            'description' => 'nullable|max:1000|',
             'url' => 'required|array',
             'url.*' => ['required', 'regex:~^https?://(?:[a-z0-9\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpe?g|png)$~'],
         ];

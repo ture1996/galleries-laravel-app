@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -15,12 +16,13 @@ class GalleryFactory extends Factory
      *
      * @return array<string, mixed>
      */
+
     public function definition()
     {
         return [
             'name' => fake()->name(),
             'description' => fake()->sentence(),
-            'url' => fake()->imageUrl(),
+            'url' => array(fake()->imageUrl()),
             'user_id' => User::inRandomOrder()->first()->id
         ];
     }

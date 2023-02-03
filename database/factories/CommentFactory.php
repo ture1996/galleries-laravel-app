@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Gallery;
 use App\Models\User;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,6 +17,7 @@ class CommentFactory extends Factory
      *
      * @return array<string, mixed>
      */
+
     public function definition()
     {
         return [
