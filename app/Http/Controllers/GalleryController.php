@@ -12,7 +12,7 @@ class GalleryController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth', ['except' => 'index']);
+        $this->middleware('auth', ['except' => ['index', 'show']]);
     }
 
     public function index()
@@ -34,6 +34,9 @@ class GalleryController extends Controller
 
     public function store(GalleryRequest $request)
     {
+        if (!$request->input('description')) {
+            $request->merge(['description' => '']);
+        }
         $gallery = $request->all();
         $gallery['user_id'] = Auth::user()->id;
         return Gallery::create($gallery);
@@ -41,6 +44,9 @@ class GalleryController extends Controller
 
     public function update($id, GalleryRequest $request)
     {
+        if (!$request->input('description')) {
+            $request->merge(['description' => '']);
+        }
         return Gallery::findOrFail($id)->update($request->all());
     }
 
