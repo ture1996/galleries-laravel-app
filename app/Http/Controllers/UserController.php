@@ -7,12 +7,8 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function show($id ,Request $request)
+    public function show($id)
     {
-        $user = User::findOrFail($id[0])->orWhereHas('galleries', function ($q) use ($request) {
-            $q->orWhere('description', 'LIKE', '%' . $request->search . '%')->orWhere('name', 'LIKE', '%' . $request->search . '%');
-        })->where('id', $id)->with('galleries')->orderBy('id', 'desc')->paginate(10);
-
-        return $user;
+        return User::findOrFail($id)->galleries()->paginate(10);
     }
 }

@@ -15,12 +15,15 @@ class GalleryController extends Controller
         $this->middleware('auth', ['except' => ['index', 'show']]);
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        $galleries = Gallery::orWhereHas('user', function ($q) use ($request) {
-            $q->where('first_name', 'LIKE', '%' . $request->search . '%');
-        })->orWhere('name', 'LIKE', '%' . $request->search . '%')->orWhere('description', 'LIKE', '%' . $request->search . '%')->with('user')->orderBy('id', 'desc')->paginate(10);
-
+        $galleries =  Gallery::with('user')->orderBy('id', 'desc')->paginate(10);
+        if ($galleries->isEmpty()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'There are no galleries created',
+            ], 404);
+        };
         return $galleries;
     }
 
